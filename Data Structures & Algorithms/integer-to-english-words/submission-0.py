@@ -1,0 +1,48 @@
+class Solution:
+    def numberToWords(self, num: int) -> str:
+        if num==0:
+            return "Zero"
+        below_20=["","One","Two", "Three", "Four", "Five",
+            "Six", "Seven", "Eight", "Nine", "Ten",
+            "Eleven", "Twelve", "Thirteen", "Fourteen",
+            "Fifteen", "Sixteen", "Seventeen", "Eighteen",
+            "Nineteen"
+        ]
+        tens=["","","Twenty","Thirty","Forty","Fifty",
+            "Sixty", "Seventy", "Eighty", "Ninety"
+        ]
+        def helper(n):
+            if n==0:
+                return ""
+            if n<20:
+                return below_20[n]
+            if n < 100:
+                return tens[n // 10] + (
+                    " " + helper(n % 10) if n % 10 else ""
+                )
+
+            return below_20[n // 100] + " Hundred" + (
+                " " + helper(n % 100) if n % 100 else ""
+            )
+
+        units = [
+            (1000000000, "Billion"),
+            (1000000, "Million"),
+            (1000, "Thousand"),
+            (1, "")
+        ]
+
+        result = []
+
+        for value, name in units:
+            if num >= value:
+                part = num // value
+                result.append(helper(part))
+
+                if name:
+                    result.append(name)
+
+                num %= value
+
+        return " ".join(result)
+        #TIme and space is O(1) and O(1) respectively
